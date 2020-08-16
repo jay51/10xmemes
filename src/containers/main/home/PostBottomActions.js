@@ -1,24 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
-  FlatList,
   Image,
-  Text,
+  TouchableOpacity
 } from 'react-native';
 import colors from 'res/colors';
-import StoryListItem from 'components/StoryListItem';
 import images from 'res/images';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const PostBottomActions = ({ post }) => {
+  const [isLike, toggleLike] = useState(false)
 
   return <View style={styles.container}>
     <View style={{ flexDirection: 'row' }}>
-      <TouchableOpacity onPress={() => console.log('test')}>
-        <Image source={images.like} style={{ ...styles.icon, marginLeft: 0 }} />
+      <TouchableOpacity onPress={() => toggleLike(!isLike) }>
+        <Image source={isLike ? images.like_selected:images.like} style={{ ...styles.icon, marginLeft: 0 }} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('test')}>
+      <TouchableOpacity onPress={() => console.log('add commnet')}>
         <Image source={images.comment} style={styles.icon} />
       </TouchableOpacity>
     </View>

@@ -16,14 +16,15 @@ const PostComments = ({ post }) => {
 
   return <TouchableOpacity style={styles.container} onPress={() => console.log('test')}>
     <Text style={styles.text}>
-      {I18n.t('home.post.likeCount').replace('{0}', post.likeCount)}
+      my comment. make it expand and contract or make a model for displaying comments
     </Text>
   </TouchableOpacity>
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 5
   },
   text: {
     color: colors.textFaded2,

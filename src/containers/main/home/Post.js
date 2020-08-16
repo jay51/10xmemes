@@ -1,20 +1,10 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
-  Text,
-  Platform,
-  StatusBar,
-  FlatList,
   Image,
-  Dimensions,
-  Button,
-  TouchableOpacity
 } from 'react-native';
 
-import images from 'res/images';
 import PostHeader from './PostHeader';
 import PostBottomActions from './PostBottomActions';
 import PostLikes from './PostLikes';
