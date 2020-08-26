@@ -12,12 +12,9 @@ import images from 'res/images';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import I18n from 'utils/I18n';
 
-const PostLikes = ({ post }) => {
-
+const PostLikes = ({ups}) => {
   return <TouchableOpacity style={styles.container} onPress={() => console.log('test')}>
-    <Text style={styles.text}>
-      {I18n.t('home.post.likeCount').replace('{0}', post.likeCount)}
-    </Text>
+    <Text style={styles.text}> {ups} </Text>
   </TouchableOpacity>
 };
 

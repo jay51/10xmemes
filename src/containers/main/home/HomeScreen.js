@@ -11,31 +11,33 @@ import { connect } from 'react-redux';
 
 
 
-const HomeScreen = (props) => {
+class HomeScreen extends React.Component {
+    constructor(props){
+        super(props);
+    }
 
-  return (
-    <FlatList
-      style={styles.container}
-      data={[
-        { key: '3' },
-        { key: '4' },
-        { key: '5' },
-      ]}
-      renderItem={() => <Post />}
-    />
-  );
-};
+    componentDidMount(){
+        this.props.dispatch({type: "GET_POSTS"})
+    }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.background,
-  },
-});
-
-const mapStateToProps = (state) => {
-  return { };
+  render(){
+      const {memes} = this.props.posts;
+      console.log("props ------------------", memes)
+      return (
+        <FlatList
+          style={{backgroundColor: colors.background }}
+          data={memes}
+          renderItem={Post}
+        />
+      );
+    }
 }
 
-const mapDispatchToProps = { };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+const mapDispatchToProps = { };
+const mapStateToProps = (state) => {
+  return {posts: state.posts};
+}
+
+
+export default connect(mapStateToProps)(HomeScreen);

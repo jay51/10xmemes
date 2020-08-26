@@ -21,14 +21,14 @@ const post = {
   publishedAt: '2019-11-24T17:28:31.123Z',
 }
 
-const Post = () => {
+const Post = ({item}) => {
   return (
     <React.Fragment>
-      <PostHeader post={post}/>
-      <Image source={{ uri: post.imgUrl }} style={styles.postImg} />
+      <PostHeader post={post} author={item.author} />
+      <Image source={{ uri: item.url }} style={styles.postImg} />
       <View style={styles.postBottomContainer}>
         <PostBottomActions post={post}/>
-        <PostLikes post={post}/>
+        <PostLikes ups={item.ups}/>
         <PostDescription post={post}/>
         <PostComments post={post}/>
         <PostPublishDate post={post}/>

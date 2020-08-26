@@ -8,11 +8,11 @@ import {
 import colors from 'res/colors';
 import images from 'res/images';
 
-const PostHeader = ({ post }) => {
+const PostHeader = ({ post, author }) => {
   return <View style={styles.container}>
     <View style={styles.nameContainer}>
       <Image source={images.zafer} style={styles.personImage} />
-      <Text style={styles.personName}>{post.username}</Text>
+      <Text style={styles.personName}>{author}</Text>
     </View>
   </View>;
 };

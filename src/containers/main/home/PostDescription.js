@@ -9,8 +9,6 @@ import ReadMore from 'react-native-read-more-text';
 import I18n from 'utils/I18n';
 
 const PostDescription = ({ post }) => {
-
-
   renderTruncatedFooter = (handlePress) => {
     return (
       <Text style={styles.readMoreText} onPress={handlePress}>

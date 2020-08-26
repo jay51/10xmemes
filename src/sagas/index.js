@@ -1,4 +1,4 @@
-import { put, fork, select, all, take, call } from 'redux-saga/effects'
+import { put, fork, select, all, take, call, takeEvery } from 'redux-saga/effects'
 import { getMessages, getStories } from 'reducers/selectors'
 import { api } from 'services'
 import { messages, stories, LOAD_MESSAGES, LOAD_STORIES } from 'actions'
@@ -53,9 +53,22 @@ function* watchLoadStories() {
 }
 
 
+function fetchPosts(){
+    return fetch("https://meme-api.herokuapp.com/gimme/3")
+    .then(res => res.json())
+}
+
+function* fetchData(){
+    try{
+        const data = yield call(fetchPosts)
+        console.log(data)
+        yield put({type: "ADD_POSTS", payload: data})
+    } catch (e){
+        yield put({type:"ADD_POSTS_FAILED", action: e})
+    }
+}
+
+
 export default function* rootSaga() {
-  yield all([
-    fork(watchLoadMessages),
-    fork(watchLoadStories),
-  ])
+    yield takeEvery("GET_POSTS", fetchData);
 }
