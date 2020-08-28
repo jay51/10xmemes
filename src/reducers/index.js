@@ -1,8 +1,9 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import * as Actions from "actions";
 
 function posts(state={count:0, memes:[]}, action) {
   switch(action.type){
-    case "ADD_POSTS":
+    case Actions.ADD_POSTS:
         return {...action.payload};
 
     default:

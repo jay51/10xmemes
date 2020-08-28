@@ -1,74 +1,38 @@
 import { put, fork, select, all, take, call, takeEvery } from 'redux-saga/effects'
-import { getMessages, getStories } from 'reducers/selectors'
-import { api } from 'services'
-import { messages, stories, LOAD_MESSAGES, LOAD_STORIES } from 'actions'
+import * as Actions from 'actions'
 
+const API_ROOT = 'https://meme-api.herokuapp.com/gimme/'
 
+const callApi = (endpoint) => {
+      const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
+    console.log(fullUrl)
+    return fetch(fullUrl)
+    .then(res => {
+        if(!res.ok){
+            Promise.reject("something went wrong")
+            .then(err => ({error:"something went wrong"}))
+        }
+        return res.json();
 
-/******************************************************************************/
-/******************************* SUBROUTINES **********************************/
-/******************************************************************************/
-
-function* fetchEntity(entity, apiFn, id) {
-  yield put( entity.request(id) )
-  const {response, error} = yield call(apiFn, id)
-  if(response)
-    yield put( entity.success(id, response) )
-  else
-    yield put( entity.failure(id, error) )
+    })
 }
 
-
-export const fetchMessages = fetchEntity.bind(null, messages, api.fetchMessages)
-export const fetchStories = fetchEntity.bind(null, stories, api.fetchStories)
-
-function* loadMessages(binId, requiredFields) {
-  const user = yield select(getMessages, binId)
-  if (!user || requiredFields.some(key => !user.hasOwnProperty(key))) {
-    yield call(fetchMessages, binId)
-  }
-}
-function* loadStories(binId, requiredFields) {
-  const user = yield select(getStories, binId)
-  if (!user || requiredFields.some(key => !user.hasOwnProperty(key))) {
-    yield call(fetchStories, binId)
-  }
-}
-
-/******************************************************************************/
-/******************************* WATCHERS *************************************/
-/******************************************************************************/
-
-function* watchLoadMessages() {
-  while(true) {
-    const {binId, requiredFields = []} = yield take(LOAD_MESSAGES)
-    yield fork(loadMessages, binId, requiredFields)
-  }
-}
-function* watchLoadStories() {
-  while(true) {
-    const {binId, requiredFields = []} = yield take(LOAD_STORIES)
-    yield fork(loadStories, binId, requiredFields)
-  }
-}
-
-
-function fetchPosts(){
-    return fetch("https://meme-api.herokuapp.com/gimme/3")
-    .then(res => res.json())
-}
-
+const fetchPosts = count => callApi(`memes/${count}`);
 function* fetchData(){
     try{
-        const data = yield call(fetchPosts)
-        console.log(data)
-        yield put({type: "ADD_POSTS", payload: data})
+        const data = yield call(fetchPosts, 10)
+        yield put({type: Actions.ADD_POSTS, payload: data})
     } catch (e){
-        yield put({type:"ADD_POSTS_FAILED", action: e})
+        yield put({type:Actions.ADD_POSTS_FAILED, action: e})
     }
 }
 
+function* watchPosts(){
+    yield takeEvery(Actions.GET_POSTS, fetchData)
+}
 
 export default function* rootSaga() {
-    yield takeEvery("GET_POSTS", fetchData);
+    yield all([
+        watchPosts()
+    ]);
 }

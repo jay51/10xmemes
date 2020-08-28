@@ -7,6 +7,7 @@ import {
 
 import Post from './Post';
 import colors from 'res/colors';
+import * as Actions from 'actions';
 import { connect } from 'react-redux';
 
 
@@ -17,12 +18,11 @@ class HomeScreen extends React.Component {
     }
 
     componentDidMount(){
-        this.props.dispatch({type: "GET_POSTS"})
+        this.props.dispatch({type: Actions.GET_POSTS})
     }
 
   render(){
       const {memes} = this.props.posts;
-      console.log("props ------------------", memes)
       return (
         <FlatList
           style={{backgroundColor: colors.background }}
